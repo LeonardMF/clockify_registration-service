@@ -1,8 +1,10 @@
 import json
 from flask import Flask, jsonify, request, Response
+from flask_cors import CORS
 
 from functions.lambda_function import lambda_handler
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/', methods=['GET'])

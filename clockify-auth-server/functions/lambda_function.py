@@ -1,8 +1,8 @@
 import json
 
 # remove . for Lambda
-from .clockify_api import check_account
-from .db import get_user_id, set_clockify_api_key
+from clockify_api import check_account
+from db import get_user_id, set_clockify_api_key
 
 def lambda_handler(event, context):
 
@@ -23,19 +23,35 @@ def lambda_handler(event, context):
                     set_clockify_api_key(user_id,user_api_key)
         except : 
             return {
-            'statusCode': 400,
-            'body': json.dumps({"valid":False}, ensure_ascii=False)
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                'Access-Control-Allow-Credentials' : True
+            },
+            'body': json.dumps({"valid":False})
         }
 
         return {
             'statusCode': 200,
-            'body': json.dumps({"valid":valid}, ensure_ascii=False)
+            'headers': {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                'Access-Control-Allow-Credentials' : True
+            },
+            'body': json.dumps({"valid":valid})
         }
 
     else:
         return {
-            'statusCode': 405,
+            'statusCode': 200,
             'headers': {
-                'Allow': 'POST'
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                'Allow': 'OPTIONS,POST,GET',
+                'Access-Control-Allow-Credentials' : True,
             },
         }
