@@ -1,0 +1,35 @@
+
+<div class="container">
+  <br>
+  <h1>Timer Tracker</h1>
+  <p><b>Disclaimer:</b> This is just a Hack for <a href="https://remote-rhapsody-platform.hubraum.com/#/event">remote rhapsody online hackathon</a> to test the Timer Tracker skill on Magenta speaker with your own <a href="https://clockify.me/">Clockify</a> account.
+  Please make sure you are using just a test account with an unique password.</p>
+  <form (ngSubmit)="send_data()">
+    <div class="mb-3">
+      <label for="user_token" class="form-label"><b>User Token:</b></label>
+      <input [(ngModel)]="user_token" (ngModelChange)="user_token=$event" required type="text" class="form-control" name="user_token" aria-describedby="emailHelp" >
+      <div id="emailHelp" class="form-text"><i>Where can I find the User Token?</i> Open the skill and listen to Magenta or check out the card.</div>
+    </div>
+    <div class="mb-3">
+      <label for="user_api_key" class="form-label"><b>Clockify API-Key:</b></label>
+      <input [(ngModel)]="user_api_key" (ngModelChange)="user_api_key=$event"required type="password" class="form-control" name="user_api_key">
+      <div id="emailHelp" class="form-text"><i>Where can I find the X-API-Key?</i> <a href="https://clockify.me/"> Clockify</a> >> Profile settings >> API >> API key >> Generate</div>
+    </div>
+    <div class="mb-3 form-check">
+      <input [(ngModel)]="user_info_accepted" (ngModelChange)="user_info_accepted=$event" type="checkbox" class="form-check-input" name="user_info_accepted">
+      <label class="form-check-label" for="exampleCheck1">It this just a test account to check out the skill.</label>
+    </div>
+    <button type="submit" class="btn btn-dark">Submit</button>
+  </form>
+  <br>
+  <div *ngIf="warning_flag" class="alert alert-secondary" role="alert">
+    {{alert_msg}}
+  </div>
+  <div *ngIf="success_flag" class="alert alert-success" role="alert">
+    {{alert_msg}}
+  </div>
+  <div *ngIf="error_flag" class="alert alert-danger" role="alert">
+    {{alert_msg}}
+  </div>
+
+</div>
