@@ -1,4 +1,4 @@
-# Server
+# Clockify Auth Server
 
 ## Create Virtual Environment
 Follow the instruction in der [Docs](https://docs.python.org/3/tutorial/venv.html):
