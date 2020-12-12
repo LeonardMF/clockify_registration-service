@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BackendService } from './backend.service';
 
 @Component({
@@ -19,8 +20,13 @@ export class AppComponent {
   success_flag: boolean = false;
   error_flag: boolean = false;
 
-  constructor( private backendService: BackendService,
-               private ref: ChangeDetectorRef ) { }
+  constructor( private route: ActivatedRoute,
+               private backendService: BackendService,
+               private ref: ChangeDetectorRef ) {
+                this.route.queryParams.subscribe(params => {
+                  this.user_token = params['user_token'];
+                });
+              }
 
   send_data(): void {
     this.warning_flag = false;
@@ -47,11 +53,11 @@ export class AppComponent {
             
         } else {
           this.warning_flag = true;
-          this.alert_msg = "Please enter you User Token from Magenta.";
+          this.alert_msg = "Please enter you Clockify API key.";
         }
       } else {
         this.warning_flag = true;
-        this.alert_msg = "Please enter you Clockify API key.";
+        this.alert_msg = "Please enter you User Token from the Hallo Magenta APP Verlauf.";
       }
     } else {
       this.warning_flag = true;
