@@ -1,5 +1,7 @@
 import boto3
+import pytz
 
+from datetime import datetime
 from decouple import config
 
 LMF_AWS_ACCESS_KEY_ID = config("LMF_AWS_ACCESS_KEY_ID")
@@ -8,6 +10,7 @@ LMF_AWS_DB_REGION = config("LMF_AWS_DB_REGION")
 LMF_AWS_TABLE_NAME = config("LMF_AWS_TABLE_NAME")
 
 CLOCKIFY_API_KEY = config('CLOCKIFY_API_KEY')
+TIME_ZONE = config('TIME_ZONE')
 
 # https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.04.html#GettingStarted.Python.04.Scan
 def get_user_id(user_token):
@@ -29,6 +32,10 @@ def get_user_id(user_token):
 
 def set_clockify_api_key(user_id, clockify_api_key):
 
+    tz = pytz.timezone(TIME_ZONE)
+    now = datetime.now(tz)
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S")
+
     try:
         dynamodb = boto3.resource('dynamodb', region_name=LMF_AWS_DB_REGION, aws_access_key_id=LMF_AWS_ACCESS_KEY_ID, aws_secret_access_key=LMF_AWS_SECRET_ACCESS_KEY)
         table = dynamodb.Table(LMF_AWS_TABLE_NAME)
@@ -36,13 +43,14 @@ def set_clockify_api_key(user_id, clockify_api_key):
                 Key = {
                         'user_id': user_id
                 },
-                UpdateExpression="set clockify_api_key=:c_a_k",
+                UpdateExpression="set clockify_api_key=:c_a_k, onboarded_at=:o_a",
                 ExpressionAttributeValues={
                     ':c_a_k': clockify_api_key,
+                    ':o_a': now_str,
                 },
         )
     except:
-        print("Project could not be added!")
+        print("Clockify API key could not be set!")
         return False
     else:
         return True
